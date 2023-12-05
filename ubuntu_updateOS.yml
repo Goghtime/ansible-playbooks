@@ -1,0 +1,30 @@
+---
+- name: Update Ubuntu
+  hosts: ubuntu
+  become: yes  # This ensures you run commands with sudo privileges
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      register: apt_update_result
+      changed_when: false  # Marks this task as "not changed" to make it idempotent
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+      when: apt_update_result.changed  # Only run this task if the apt cache was updated
+
+    - name: Remove unnecessary packages
+      apt:
+        autoremove: yes
+      when: apt_update_result.changed  # Only run this task if the apt cache was updated
+
+    - name: Reboot if required
+      reboot:
+      when: apt_update_result.changed  # Reboot only if updates were installed
+
+  handlers:
+    - name: Reboot the system
+      reboot:
+      when: apt_update_result.changed  # Reboot only if updates were installed

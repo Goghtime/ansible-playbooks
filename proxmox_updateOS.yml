@@ -1,35 +1,30 @@
----
-- name: Update Proxmox Hosts
-  hosts: proxmox
-  become: yes
-  user: root
+tasks:
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+    register: apt_update_result
 
-  tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-      register: apt_update_result
+  - name: Upgrade all packages if updates are available
+    apt:
+      upgrade: dist
+    when: apt_update_result.changed
 
-    - name: Upgrade all packages if updates are available
-      apt:
-        upgrade: dist
-      when: apt_update_result.changed
+  - name: Remove unnecessary packages if updates are available
+    apt:
+      autoremove: yes
+    when: apt_update_result.changed
 
-    - name: Remove unnecessary packages if updates are available
-      apt:
-        autoremove: yes
-      when: apt_update_result.changed
+  - name: Check if a reboot is needed
+    stat:
+      path: /var/run/reboot-required
+    register: reboot_required
 
-    - name: Check if a reboot is needed
-      stat:
-        path: /var/run/reboot-required
-      register: reboot_required
+  - name: Trigger reboot if needed
+    debug:
+      msg: "Reboot required"
+    when: reboot_required.stat.exists
+    notify: Reboot the system
 
-    - name: Request reboot
-      meta: noop
-      notify: Reboot the system
-      when: reboot_required.stat.exists
-
-  handlers:
-    - name: Reboot the system
-      reboot:
+handlers:
+  - name: Reboot the system
+    reboot:

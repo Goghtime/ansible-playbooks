@@ -4,23 +4,32 @@
   become: yes
   user: root
 
-  tasks:
-    - name: Update apt repo and cache on all Debian/Ubuntu boxes
-      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      register: apt_update_result
 
-    - name: Upgrade all packages on servers
-      apt: upgrade=dist force_apt_get=yes
+    - name: Upgrade all packages if updates are available
+      apt:
+        upgrade: dist
+      when: apt_update_result.changed
 
-    - name: Check if a reboot is needed on all servers
-      register: reboot_required_file
-      stat: path=/var/run/reboot-required get_md5=no
+    - name: Remove unnecessary packages if updates are available
+      apt:
+        autoremove: yes
+      when: apt_update_result.changed
 
-    - name: Reboot the box if kernel updated
+    - name: Check if a reboot is needed
+      command: "[ -f /var/run/reboot-required ]"
+      changed_when: false
+      register: reboot_required
+      ignore_errors: true
+
+    - name: Notify handler to reboot
+      meta: flush_handlers
+      when: reboot_required.rc == 0
+
+  handlers:
+    - name: Reboot the system
       reboot:
-        msg: "Reboot initiated by Ansible for kernel updates"
-        connect_timeout: 5
-        reboot_timeout: 300
-        pre_reboot_delay: 0
-        post_reboot_delay: 30
-        test_command: uptime
-      when: reboot_required_file.stat.exists

@@ -21,14 +21,14 @@
       when: apt_update_result.changed
 
     - name: Check if a reboot is needed
-      command: "[ -f /var/run/reboot-required ]"
-      changed_when: false
+      stat:
+        path: /var/run/reboot-required
       register: reboot_required
-      ignore_errors: true
 
-    - name: Notify handler to reboot
-      meta: flush_handlers
-      when: reboot_required.rc == 0
+    - name: Request reboot
+      meta: noop
+      notify: Reboot the system
+      when: reboot_required.stat.exists
 
   handlers:
     - name: Reboot the system

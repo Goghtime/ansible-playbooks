@@ -1,4 +1,10 @@
-tasks:
+---
+- name: Update Proxmox Hosts
+  hosts: proxmox
+  become: yes
+  user: root
+
+ tasks:
   - name: Update apt cache
     apt:
       update_cache: yes

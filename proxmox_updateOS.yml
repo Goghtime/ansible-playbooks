@@ -1,13 +1,15 @@
 ---
+
 - name: Update Proxmox Hosts
   hosts: proxmox
+
   become: yes
   user: root
 
- tasks:
+  tasks:
   - name: Update apt cache
     apt:
-      update_cache: yes
+        update_cache: yes
     register: apt_update_result
 
   - name: Upgrade all packages if updates are available
@@ -31,6 +33,6 @@
     when: reboot_required.stat.exists
     notify: Reboot the system
 
-handlers:
-  - name: Reboot the system
-    reboot:
+  handlers:
+      - name: Reboot the system
+        reboot:

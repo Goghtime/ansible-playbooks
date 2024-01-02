@@ -1,0 +1,6 @@
+Name: 'NPROXY01' # VM Name
+memory: '4096'
+sockets: '2'
+ipconfig0: 'ip=192.168.200.8/24,gw=192.168.200.1'
+ipconfig1: 'ip=192.168.10.2/24'
+net1: 'virtio,bridge=vmbr0,tag=10,firewall=1'

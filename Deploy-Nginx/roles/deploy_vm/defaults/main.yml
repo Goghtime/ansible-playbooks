@@ -1,0 +1,4 @@
+script_path: "./roles/deploy_vm/files/Build.ps1" # Local Path
+VMID: '5000'
+Node: 'pve02'
+node_fqdn: '192.168.100.81'

@@ -1,0 +1,22 @@
+---
+- name: Deploy VM from clone.
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/secrets.yml
+  become: true
+  roles:
+    - deploy_vm
+
+
+- name: Configure VM. Deploy Proxy.
+  hosts: nginx_server
+  gather_facts: yes
+  vars_files:
+    - vars/secrets.yml
+  become: true
+  roles: 
+    - config
+    - docker
+    #- setup_nginx
+ 

@@ -1,0 +1,41 @@
+---
+    - name: Ensure aptitude is present (for dependency resolution)
+      ansible.builtin.apt:
+        name: aptitude
+        state: present
+        update_cache: true
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600 # Cache valid for 1 hour to avoid redundant updates
+
+    - name: Upgrade all packages to the latest version
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - net-tools
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+          - gnupg-agent
+          - autoconf
+          - dpkg-dev
+          - file
+          - g++
+          - gcc
+          - libc-dev
+          - make
+          - pkg-config
+          - re2c
+          - wget
+          - git
+        state: present
+        update_cache: true

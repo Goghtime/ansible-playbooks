@@ -1,1 +1,5 @@
-.vscode/*
+ansible.cfg
+hosts
+*/defaults/*
+*/vars/*
+/vars

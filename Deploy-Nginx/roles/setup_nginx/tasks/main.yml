@@ -1,0 +1,25 @@
+---
+    - name: Clone the Git repository
+      git:
+        repo: https://github.com/Goghtime/nginx-compose.git
+        dest: ~/nginx-compose
+
+    - name: Create local directories if they don't exist
+      ansible.builtin.file:
+        path: ~/nginx-compose/{{ item }}
+        state: directory
+      loop:
+        - cert
+        - logs
+        - conf.d
+
+    - name: Copy Cert from NFS share to another location
+      shell: cp /mnt/NAS/nginx-compose/cert/* ~/nginx-compose/cert
+
+    - name: Copy Conf.d from NFS share to another location
+      shell: cp /mnt/NAS/nginx-compose/conf.d/* ~/nginx-compose/conf.d
+
+    - name: Start services defined in docker-compose.yml
+      docker_compose:
+        project_src: ~/nginx-compose
+        state: present  # This can be 'started', 'stopped', or 'absent'

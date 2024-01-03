@@ -13,11 +13,21 @@ The Idea is to run this playbook to bring my Proxy server up an in an operationa
 
 
 ## TODO
- - deploy nginx container
+### Priority 
+
+##### High
  - deploy configs
- - workout backup crons
- - DNS entry for VM
- - Modularize configs
- - DNS Entries for configs
+    - current workaround - mount NFS and cp files. I will host these types of things   
+    within an internal HTTP file server
+ - DNS entry for VM - TBD
+
+##### Medium
+ - workout backup crons - TBD
+
+##### Low
+ - DNS Entries for configs within ansbile - TBD
+    - This will require a restPS server and some scripts to allow for this to happen. for now it's manual.
+    - a future state would be an API call to a windows endpoint with the ability to make / delete / update DNS records for a given zone.
+
 
 

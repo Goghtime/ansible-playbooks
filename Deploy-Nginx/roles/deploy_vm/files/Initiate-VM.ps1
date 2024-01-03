@@ -6,8 +6,10 @@ Import-module Corsinvest.ProxmoxVE.Api
 
 # Start the VM
 $status = Get-PveVm -VmIdorName $VMID
+
 if ($status.status -eq "stopped") {
     $start = Start-PveVm -VmIdorName $VMID
+    Start-Sleep -Seconds 120
     if ($start.StatusCode -eq 200){
         Write-Output "Started"
         Exit 0

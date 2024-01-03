@@ -1,5 +1,5 @@
 ---
-- name: Deploy VM from clone.
+- name: Deploy VM from clone. Set VM parameters. Power On.
   hosts: localhost
   gather_facts: no
   vars_files:
@@ -9,14 +9,20 @@
     - deploy_vm
 
 
-- name: Configure VM. Deploy Proxy.
+- name: Configure VM. Copy Repo.
+  hosts: nginx_server
+  gather_facts: yes
+  become: true
+  vars_files:
+    - vars/secrets.yml
+  roles: 
+    - config
+    - docker
+    
+- name: Config. Start
   hosts: nginx_server
   gather_facts: yes
   vars_files:
     - vars/secrets.yml
-  become: true
   roles: 
-    - config
-    - docker
-    #- setup_nginx
- 
+    - setup_nginx

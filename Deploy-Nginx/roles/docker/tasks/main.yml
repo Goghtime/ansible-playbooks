@@ -34,6 +34,12 @@
 - name: Install Docker module for Python
   ansible.builtin.pip:
     name: docker
+    version: "6.1.3"
+
+- name: Install Docker module for Python
+  ansible.builtin.pip:
+    name: docker-compose
+    version: "1.29.2"
 
 - name: Install latest Docker Compose
   ansible.builtin.get_url:
@@ -54,3 +60,15 @@
 #    dest: /etc/docker/daemon.json
 #    mode: '0644'
 
+- name: Reboot the host
+  ansible.builtin.reboot:
+  async: 0
+  poll: 0
+  ignore_errors: yes
+
+- name: Wait for the host to become reachable
+  wait_for:
+    host: 192.168.200.8
+    port: 22  # Change the port if SSH is running on a different port
+    state: started
+    timeout: 300 

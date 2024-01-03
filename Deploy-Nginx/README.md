@@ -19,7 +19,6 @@ The Idea is to run this playbook to bring my Proxy server up an in an operationa
  - deploy configs
     - current workaround - mount NFS and cp files. I will host these types of things   
     within an internal HTTP file server
- - DNS entry for VM - TBD
 
 ##### Medium
  - workout backup crons - TBD

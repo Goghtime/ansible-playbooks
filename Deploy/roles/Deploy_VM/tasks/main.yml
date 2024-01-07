@@ -1,0 +1,14 @@
+---
+
+  - name: Clone > Set VM Config > Power On
+    ansible.builtin.command:
+      cmd: "pwsh {{ ARG }}"
+    register: script_output
+    changed_when: "'Changes made' in script_output.stdout"
+    failed_when: "'Error' in script_output.stderr"
+    no_log: false
+
+  - name: Display "Clone > Set VM Config > Power On" Output
+    debug:
+      msg: "{{ script_output.stdout }}"
+

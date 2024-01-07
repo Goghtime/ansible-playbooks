@@ -1,0 +1,6 @@
+- name: Install python package
+  ansible.builtin.pip:
+    name: 
+      - proxmoxer
+      - requests
+    extra_args: "--break-system-packages"

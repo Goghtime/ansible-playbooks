@@ -1,0 +1,51 @@
+---
+- name: Prep and deploy PSRunner.
+  hosts: localhost
+  gather_facts: no
+  become: true
+  vars_files:
+    - vars/secrets.yml
+    - vars/TUS-PUANSIBLE01_vars.yml
+  roles:
+    - ansible_prereqs
+    - Deploy_PSRunner
+
+- name: Configure PSRunner.
+  hosts: PSrunner
+  gather_facts: yes
+  become: true
+  vars_files:
+    - vars/secrets.yml
+    - vars/TUS-PUANSIBLE01_vars.yml
+
+  roles:
+   - Configure_PSRunner
+
+- name: Deploy VM from clone. Set VM parameters. Power On.
+  hosts: PSrunner
+  gather_facts: yes
+  vars_files:
+    - vars/secrets.yml
+    - vars/TUS-PUANSIBLE01_vars.yml
+  become: true
+  roles:
+    - Deploy_VM
+
+- name: Configure VM. Copy Repo.
+  hosts: TUS-PUANSIBLE01
+  gather_facts: yes
+  become: true
+  vars_files:
+    - vars/secrets.yml
+    - vars/TUS-PUANSIBLE01_vars.yml
+  roles: 
+    - Configure_VM-WithDocker
+    
+- name: Config PROD Ansible-Semaphore. 
+  hosts: TUS-PUANSIBLE01
+  gather_facts: yes
+  vars_files:
+    - vars/secrets.yml
+    - vars/TUS-PUNPROXY01_vars.yml
+  roles: 
+    - Deploy_PROD-Ansible

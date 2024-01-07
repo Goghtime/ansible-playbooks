@@ -1,0 +1,38 @@
+  - name: Update the package list
+    apt:
+      update_cache: yes
+
+  - name: Install required packages.
+    apt:
+        name: "{{ item }}"
+        state: present
+    loop:
+      - wget
+      - apt-transport-https
+      - software-properties-common
+      - git
+
+  - name: Check if the file already exists
+    stat:
+      path: ~/powershell_7.4.0-1.deb_amd64.deb
+    register: file_check
+
+  - name: Download the Microsoft repository keys (if not already present)
+    get_url:
+      url: "https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell_7.4.0-1.deb_amd64.deb"
+      dest: ~/powershell_7.4.0-1.deb_amd64.deb
+    when: not file_check.stat.exists
+
+  - name: Register the Microsoft repository keys
+    apt:
+      deb: ~/powershell_7.4.0-1.deb_amd64.deb
+      state: present
+
+  - name: Update the list of packages after adding Powershell.
+    apt:
+      update_cache: yes
+
+  - name: Clone Git repository.
+    git:
+      repo: https://github.com/Goghtime/PS-ProxmoxDeployFromClone.git
+      dest: ~/PS-ProxmoxDeployFromClone

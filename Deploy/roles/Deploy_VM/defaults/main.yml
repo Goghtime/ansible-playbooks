@@ -1,0 +1,2 @@
+script_path: "~/PS-ProxmoxDeployFromClone/Build.ps1"
+node_fqdn: '192.168.100.81'

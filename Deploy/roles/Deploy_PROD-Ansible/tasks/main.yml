@@ -1,0 +1,24 @@
+---
+    - name: Clone the Git repository
+      git:
+        repo: https://github.com/Goghtime/Semaphore-Compose.git
+        dest: ~/Semaphore-Compose
+    
+    - name: Create a file
+      file:
+        path: ~/Semaphore-Compose/.env  # Specify the file path
+        state: touch
+
+    - name: Populate the file
+      copy:
+        content: |
+          user={{ user }}
+          SEMAPHORE_ADMIN_PASSWORD={{ SEMAPHORE_ADMIN_PASSWORD }}
+          SEMAPHORE_ADMIN_NAME={{ SEMAPHORE_ADMIN_NAME }}
+          SEMAPHORE_ADMIN_EMAIL={{ SEMAPHORE_ADMIN_EMAIL }}
+        dest: ~/Semaphore-Compose/.env 
+
+    - name: Start services defined in docker-compose.yml
+      docker_compose:
+        project_src: ~/Semaphore-Compose
+        state: present  # This can be 'started', 'stopped', or 'absent'

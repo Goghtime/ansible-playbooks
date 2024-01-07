@@ -1,0 +1,27 @@
+- name: Create PSRunner
+  community.general.proxmox:
+    vmid: '{{ PSRunner }}'
+    node: '{{ node }}'
+    api_user: '{{ Username }}'
+    api_password: '{{ password }}'
+    api_host: '{{ node }}'
+    password: '{{ password }}'
+    storage: NFS
+    ostemplate: 'NFS:vztmpl/ubuntu-23.10-standard_23.10-1_amd64.tar.zst'
+    netif: '{"net0":"name=eth0,gw=192.168.200.1,ip=192.168.200.11/24,bridge=vmbr0,tag=200"}'
+    cores: 2
+    pubkey: '{{ pubkey }}'
+    nameserver: '{{ nameserver }}'
+    memory: 1024
+    description: build by ansible
+    state: present
+    hostname: PSRunner
+
+- name: Turn on PSRunner
+  community.general.proxmox:
+    vmid: '{{ PSRunner }}' 
+    api_user: '{{ Username }}'
+    api_password: '{{ password }}'
+    api_host: '{{ node }}'
+    state: started
+    timeout: 120

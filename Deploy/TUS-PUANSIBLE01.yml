@@ -32,7 +32,7 @@
     - Deploy_VM
 
 - name: Configure VM. Copy Repo.
-  hosts: TUS-PUANSIBLE01
+  hosts: PROD_ANSIBLE
   gather_facts: yes
   become: true
   vars_files:
@@ -42,10 +42,10 @@
     - Configure_VM-WithDocker
     
 - name: Config PROD Ansible-Semaphore. 
-  hosts: TUS-PUANSIBLE01
+  hosts: PROD_ANSIBLE
   gather_facts: yes
   vars_files:
     - vars/secrets.yml
-    - vars/TUS-PUNPROXY01_vars.yml
+    - vars/TUS-PUANSIBLE01_vars.yml
   roles: 
     - Deploy_PROD-Ansible

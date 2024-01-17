@@ -4,8 +4,8 @@
   gather_facts: no
   become: true
   vars_files:
-    - vars/secrets.yml
-    - vars/TUS-PUDNODE01_vars.yml
+    #- vars/secrets.yml
+    #- vars/TUS-PUDNODE01_vars.yml
   roles:
     - ansible_prereqs
     - Deploy_PSRunner
@@ -15,8 +15,8 @@
   gather_facts: yes
   become: true
   vars_files:
-    - vars/secrets.yml
-    - vars/TUS-PUDNODE01_vars.yml
+    #- vars/secrets.yml
+    #- vars/TUS-PUDNODE01_vars.yml
   roles:
    - Configure_PSRunner
 
@@ -24,8 +24,8 @@
   hosts: PSrunner
   gather_facts: yes
   vars_files:
-    - vars/secrets.yml
-    - vars/TUS-PUDNODE01_vars.yml
+    #- vars/secrets.yml
+    #- vars/TUS-PUDNODE01_vars.yml
   become: true
   roles:
     - Deploy_VM
@@ -35,8 +35,9 @@
   gather_facts: yes
   become: true
   vars_files:
-    - vars/secrets.yml
-    - vars/TUS-PUDNODE01_vars.yml
+    - /authorized-keys/secrets.yml
+    #- vars/secrets.yml
+    #- vars/TUS-PUDNODE01_vars.yml
   roles: 
     - Configure_VM-WithDocker
     

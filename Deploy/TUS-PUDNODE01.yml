@@ -2,13 +2,13 @@
 - name: Prep and deploy PSRunner.
   hosts: localhost
   gather_facts: no
-  become: true
+  #become: true
   vars_files:
     - /authorized-keys/secrets.yml
     #- vars/secrets.yml
     #- vars/TUS-PUDNODE01_vars.yml
   roles:
-    #- ansible_prereqs
+    - ansible_prereqs
     - Deploy_PSRunner
 
 - name: Configure PSRunner.

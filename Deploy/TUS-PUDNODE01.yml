@@ -4,10 +4,11 @@
   gather_facts: no
   become: true
   vars_files:
+    - /authorized-keys/secrets.yml
     #- vars/secrets.yml
     #- vars/TUS-PUDNODE01_vars.yml
   roles:
-    - ansible_prereqs
+    #- ansible_prereqs
     - Deploy_PSRunner
 
 - name: Configure PSRunner.
@@ -15,6 +16,7 @@
   gather_facts: yes
   become: true
   vars_files:
+    - /authorized-keys/secrets.yml
     #- vars/secrets.yml
     #- vars/TUS-PUDNODE01_vars.yml
   roles:
@@ -24,6 +26,7 @@
   hosts: PSrunner
   gather_facts: yes
   vars_files:
+    - /authorized-keys/secrets.yml
     #- vars/secrets.yml
     #- vars/TUS-PUDNODE01_vars.yml
   become: true
